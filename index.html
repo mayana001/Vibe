@@ -1,150 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vibe Forest</title>
-<style>
-/* ===== RESET ===== */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(145deg, #1b2735, #090a0f);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    color: #f0f0f0;
-    overflow: hidden;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vibe Forest</title>
+  <style>
+    /* ====== RESET ====== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* ===== HEADER ===== */
-h1 {
-    font-size: 2.4rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 12px rgba(0,0,0,0.5);
-    letter-spacing: 2px;
-}
+    body {
+      height: 100vh;
+      overflow: hidden;
+      font-family: "Poppins", system-ui, sans-serif;
+      background: radial-gradient(circle at 20% 30%, #1d2521, #0f1311 70%);
+      color: #edf2ef;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-/* ===== MUSIC BUTTON ===== */
-#musicBtn {
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    margin-bottom: 25px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(45deg, #7bbf6a, #4a785e);
-    color: #fff;
-    cursor: pointer;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-}
-#musicBtn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-    background: linear-gradient(45deg, #91d17c, #5c9670);
-}
+    h1 {
+      font-size: 2.6rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
+      background: linear-gradient(to right, #b2f28b, #64e9cb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 25px;
+      text-shadow: 0 0 12px rgba(100, 233, 203, 0.4);
+    }
 
-/* ===== IMAGE CARD ===== */
-.carousel-container {
-    position: relative;
-    width: 60%;
-    max-width: 700px;
-}
-#imgSkog {
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    transition: transform 1s ease, opacity 1s ease;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(8px);
-    cursor: pointer;
-}
-#imgSkog:hover {
-    transform: scale(1.03) rotateZ(0.5deg);
-}
+    /* ====== CAROUSEL WRAPPER ====== */
+    .carousel {
+      position: relative;
+      width: 70%;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+    }
 
-/* ===== IMAGE TEXT ===== */
-#tekst {
-    margin-top: 15px;
-    font-size: 1.2rem;
-    color: #cfe3dc;
-    text-align: center;
-    text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
-    opacity: 0;
-    transition: opacity 0.8s ease;
-}
+    #imgSkog {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+      opacity: 0;
+      transform: scale(1.05);
+      transition: opacity 1s ease, transform 1.2s ease;
+    }
 
-/* ===== FADE IN ANIMATION ===== */
-.fadeIn {
-    opacity: 1 !important;
-}
+    #imgSkog.show {
+      opacity: 1;
+      transform: scale(1);
+    }
 
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
-    h1 { font-size: 1.8rem; }
-    .carousel-container { width: 90%; }
-}
-</style>
+    .caption {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: #ffffffdd;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+      letter-spacing: 1px;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: all 1s ease;
+    }
+
+    .caption.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ====== CONTROL BUTTON ====== */
+    #musicBtn {
+      margin-top: 25px;
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #64e9cb, #b2f28b);
+      color: #0f1311;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(178, 242, 139, 0.3);
+      transition: all 0.4s ease;
+    }
+
+    #musicBtn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 6px 25px rgba(100, 233, 203, 0.4);
+      background: linear-gradient(135deg, #b2f28b, #64e9cb);
+    }
+
+    /* ====== BACKGROUND OVERLAY (Optional aesthetic) ====== */
+    .glow {
+      position: absolute;
+      top: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(
+        circle at center,
+        rgba(100, 233, 203, 0.05),
+        transparent 70%
+      );
+      z-index: -1;
+      animation: glow 10s infinite alternate ease-in-out;
+    }
+
+    @keyframes glow {
+      from {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      to {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      .carousel {
+        width: 90%;
+      }
+    }
+  </style>
 </head>
 <body>
+  <h1>Forest Vibes 🌲</h1>
+  <div class="carousel">
+    <img id="imgSkog" src="images/skog1.jpg" alt="Forest Image" class="show" />
+    <div id="tekst" class="caption show">Skog 1</div>
+  </div>
 
-<h1>Vibe Forest</h1>
-<button id="musicBtn">▶ Play Music</button>
+  <button id="musicBtn">🎵 Play Ambience</button>
 
-<audio id="bgMusic" loop>
-    <source src="audio/syouki_takahashi-midnight-forest-184304.mp3" type="audio/mpeg">
-</audio>
+  <audio id="bgMusic" loop>
+    <source
+      src="audio/syouki_takahashi-midnight-forest-184304.mp3"
+      type="audio/mpeg"
+    />
+  </audio>
 
-<div class="carousel-container">
-    <img src="images/skog1.jpg" id="imgSkog">
-    <p id="tekst">Skog 1</p>
-</div>
+  <div class="glow"></div>
 
-<script>
-let indeks = 0;
-let tekster = ["Skog 1", "Skog 2", "Skog 3", "Skog 4"];
-let bilder = ["skog1.jpg", "skog2.jpg", "skog3.jpg", "skog4.jpg"];
+  <script>
+    const tekster = ["Skog 1", "Skog 2", "Skog 3", "Skog 4"];
+    const bilder = ["skog1.jpg", "skog2.jpg", "skog3.jpg", "skog4.jpg"];
+    let indeks = 0;
 
-const imgSkog = document.getElementById("imgSkog");
-const tekstEl = document.getElementById("tekst");
-const music = document.getElementById("bgMusic");
-const btn = document.getElementById("musicBtn");
+    const img = document.getElementById("imgSkog");
+    const tekst = document.getElementById("tekst");
 
-// Обработчик кнопки музыки
-btn.addEventListener("click", () => {
-    if (music.paused) {
-        music.play();
-        btn.textContent = "⏸ Pause Music";
-    } else {
-        music.pause();
-        btn.textContent = "▶ Play Music";
+    function byttBilde() {
+      indeks = (indeks + 1) % bilder.length;
+      img.classList.remove("show");
+      tekst.classList.remove("show");
+      setTimeout(() => {
+        img.src = "images/" + bilder[indeks];
+        tekst.textContent = tekster[indeks];
+        img.classList.add("show");
+        tekst.classList.add("show");
+      }, 400);
     }
-});
 
-// Функция смены картинки
-function byttBilde() {
-    indeks = (indeks + 1) % bilder.length;
-    imgSkog.style.opacity = 0;
-    tekstEl.style.opacity = 0;
-    setTimeout(() => {
-        imgSkog.src = "images/" + bilder[indeks];
-        tekstEl.textContent = tekster[indeks];
-        imgSkog.classList.add("fadeIn");
-        tekstEl.classList.add("fadeIn");
-    }, 500);
-}
+    setInterval(byttBilde, 4000);
 
-// Убираем fade класс после анимации
-imgSkog.addEventListener("transitionend", () => imgSkog.classList.remove("fadeIn"));
-tekstEl.addEventListener("transitionend", () => tekstEl.classList.remove("fadeIn"));
+    // Music toggle
+    const music = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicBtn");
 
-// Запуск карусели
-setInterval(byttBilde, 3500);
-</script>
-
+    btn.addEventListener("click", () => {
+      if (music.paused) {
+        music.play();
+        btn.innerHTML = "⏸ Pause Ambience";
+      } else {
+        music.pause();
+        btn.innerHTML = "🎵 Play Ambience";
+      }
+    });
+  </script>
 </body>
 </html>
 
