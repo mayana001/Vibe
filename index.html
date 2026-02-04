@@ -3,30 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Vibe Forest</title>
 </head>
 <body>
-    <h1>Bilde Karusell</h1>
 
-    <img  width=50% src="images/skog1.jpg" alt="" id="imgSkog">
-    <br>
+    <h1>Bilde Karusell</h1>
+    <button id="musicBtn">▶ Play Music</button>
+
+      <audio id="bgMusic" loop>
+    <source src="audio/syouki_takahashi-midnight-forest-184304.mp3" type="audio/mpeg">
+     </audio>
+
+
+    <img width="50%" src="images/skog1.jpg" id="imgSkog">
+    <p id="tekst"></p>
+    
+
     <script>
+        let indeks = 0;
+        let tekster = ["Skog 1", "Skog 2", "Skog 3", "Skog 4"];
+        let bilder = ["skog1.jpg", "skog2.jpg", "skog3.jpg", "skog4.jpg"];
+
         function byttBilde() {
-            
             indeks++;
-            if (indeks === 3) {
+
+            if (indeks === 4) {
                 indeks = 0;
             }
-            let fileURL = "images/skog" + bilder[indeks];
-            
+
+            let fileURL = "images/" + bilder[indeks];
             document.getElementById("imgSkog").src = fileURL;
-           
-          let indeks = 0;
-          let bilder = ["skog1.jpg", "skog2.jpg", "skog3.jpg"];
+            document.getElementById("tekst").textContent= tekster[indeks];
 
+            const music = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicBtn");
+
+    btn.addEventListener("click", () => {
+        if (music.paused) {
+            music.play();
+            btn.textContent = "⏸ Pause Music";
+        } else {
+            music.pause();
+            btn.textContent = "▶ Play Music";
         }
-        setInterval(byttBilde, 2000);
-
+    });
+        }
+        byttBilde();
+        setInterval(byttBilde, 3000);
     </script>
+ <style>
+    /* RESET */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f4f6f8, #e9edf1);
+        font-family: "Segoe UI", system-ui, sans-serif;
+        color: #2c2c2c;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+        font-weight: 500;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+    }
+
+    /* GALLERY CONTAINER EFFECT */
+    img {
+        width: 50%;
+        max-width: 600px;
+        border-radius: 22px;
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.12),
+            0 8px 16px rgba(0, 0, 0, 0.08);
+        transition: 
+            opacity 0.8s ease,
+            transform 0.8s ease;
+        background: #fff;
+    }
+
+    /* subtle hover luxury */
+    img:hover {
+        transform: scale(1.015);
+    }
+    #musicBtn {
+        padding: 10px 20px;
+        font-size: 1rem;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 8px;
+        background-color: #d4c57b;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+    }
+
+    /* TEXT UNDER IMAGE */
+    #tekst {
+        margin-top: 18px;
+        font-size: 1.1rem;
+        color: #5a5a5a;
+        letter-spacing: 0.5px;
+        transition: opacity 0.6s ease;
+    }
+
+    /* smooth fade illusion on change */
+    img,
+    #tekst {
+        animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+        img {
+            width: 85%;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+        }
+    }
+</style>
+
 </body>
 </html>
