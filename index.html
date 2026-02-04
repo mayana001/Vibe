@@ -1,43 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Forest</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Forest</title>
+<style>
+/* ===== RESET ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #1b2735, #090a0f);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: #f0f0f0;
+    overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+h1 {
+    font-size: 2.4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 12px rgba(0,0,0,0.5);
+    letter-spacing: 2px;
+}
+
+/* ===== MUSIC BUTTON ===== */
+#musicBtn {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(45deg, #7bbf6a, #4a785e);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+#musicBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+    background: linear-gradient(45deg, #91d17c, #5c9670);
+}
+
+/* ===== IMAGE CARD ===== */
+.carousel-container {
+    position: relative;
+    width: 60%;
+    max-width: 700px;
+}
+#imgSkog {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    transition: transform 1s ease, opacity 1s ease;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+}
+#imgSkog:hover {
+    transform: scale(1.03) rotateZ(0.5deg);
+}
+
+/* ===== IMAGE TEXT ===== */
+#tekst {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    color: #cfe3dc;
+    text-align: center;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+/* ===== FADE IN ANIMATION ===== */
+.fadeIn {
+    opacity: 1 !important;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+    h1 { font-size: 1.8rem; }
+    .carousel-container { width: 90%; }
+}
+</style>
 </head>
 <body>
 
-    <h1>Bilde Karusell</h1>
-    <button id="musicBtn">▶ Play Music</button>
+<h1>Vibe Forest</h1>
+<button id="musicBtn">▶ Play Music</button>
 
-      <audio id="bgMusic" loop>
+<audio id="bgMusic" loop>
     <source src="audio/syouki_takahashi-midnight-forest-184304.mp3" type="audio/mpeg">
-     </audio>
+</audio>
 
+<div class="carousel-container">
+    <img src="images/skog1.jpg" id="imgSkog">
+    <p id="tekst">Skog 1</p>
+</div>
 
-    <img width="50%" src="images/skog1.jpg" id="imgSkog">
-    <p id="tekst"></p>
-    
-
-    <script>
-     let indeks = 0;
+<script>
+let indeks = 0;
 let tekster = ["Skog 1", "Skog 2", "Skog 3", "Skog 4"];
 let bilder = ["skog1.jpg", "skog2.jpg", "skog3.jpg", "skog4.jpg"];
 
-// Функция для смены картинки и текста
-function byttBilde() {
-    indeks++;
-    if (indeks === bilder.length) {
-        indeks = 0;
-    }
-    document.getElementById("imgSkog").src = "images/" + bilder[indeks];
-    document.getElementById("tekst").textContent = tekster[indeks];
-}
-
-// Вешаем обработчик на кнопку один раз
+const imgSkog = document.getElementById("imgSkog");
+const tekstEl = document.getElementById("tekst");
 const music = document.getElementById("bgMusic");
 const btn = document.getElementById("musicBtn");
 
+// Обработчик кнопки музыки
 btn.addEventListener("click", () => {
     if (music.paused) {
         music.play();
@@ -48,105 +124,26 @@ btn.addEventListener("click", () => {
     }
 });
 
+// Функция смены картинки
+function byttBilde() {
+    indeks = (indeks + 1) % bilder.length;
+    imgSkog.style.opacity = 0;
+    tekstEl.style.opacity = 0;
+    setTimeout(() => {
+        imgSkog.src = "images/" + bilder[indeks];
+        tekstEl.textContent = tekster[indeks];
+        imgSkog.classList.add("fadeIn");
+        tekstEl.classList.add("fadeIn");
+    }, 500);
+}
+
+// Убираем fade класс после анимации
+imgSkog.addEventListener("transitionend", () => imgSkog.classList.remove("fadeIn"));
+tekstEl.addEventListener("transitionend", () => tekstEl.classList.remove("fadeIn"));
+
 // Запуск карусели
-byttBilde();
-setInterval(byttBilde, 3000);
-
-    </script>
- <style>
-    /* RESET */
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #f4f6f8, #e9edf1);
-        font-family: "Segoe UI", system-ui, sans-serif;
-        color: #2c2c2c;
-    }
-
-    h1 {
-        font-size: 2.2rem;
-        font-weight: 500;
-        margin-bottom: 30px;
-        letter-spacing: 1px;
-    }
-
-    /* GALLERY CONTAINER EFFECT */
-    img {
-        width: 50%;
-        max-width: 600px;
-        border-radius: 22px;
-        box-shadow: 
-            0 20px 40px rgba(0, 0, 0, 0.12),
-            0 8px 16px rgba(0, 0, 0, 0.08);
-        transition: 
-            opacity 0.8s ease,
-            transform 0.8s ease;
-        background: #fff;
-    }
-
-    /* subtle hover luxury */
-    img:hover {
-        transform: scale(1.015);
-    }
-    #musicBtn {
-        padding: 10px 20px;
-        font-size: 1rem;
-        margin-bottom: 20px;
-        border: none;
-        border-radius: 8px;
-        background-color: #d4c57b;
-        color: white;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: background-color 0.3s ease;
-    }
-
-    /* TEXT UNDER IMAGE */
-    #tekst {
-        margin-top: 18px;
-        font-size: 1.1rem;
-        color: #5a5a5a;
-        letter-spacing: 0.5px;
-        transition: opacity 0.6s ease;
-    }
-
-    /* smooth fade illusion on change */
-    img,
-    #tekst {
-        animation: fadeIn 1s ease;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(8px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* MOBILE */
-    @media (max-width: 768px) {
-        img {
-            width: 85%;
-        }
-
-        h1 {
-            font-size: 1.6rem;
-        }
-    }
-</style>
+setInterval(byttBilde, 3500);
+</script>
 
 </body>
 </html>
