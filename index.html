@@ -20,36 +20,38 @@
     
 
     <script>
-        let indeks = 0;
-        let tekster = ["Skog 1", "Skog 2", "Skog 3", "Skog 4"];
-        let bilder = ["skog1.jpg", "skog2.jpg", "skog3.jpg", "skog4.jpg"];
+     let indeks = 0;
+let tekster = ["Skog 1", "Skog 2", "Skog 3", "Skog 4"];
+let bilder = ["skog1.jpg", "skog2.jpg", "skog3.jpg", "skog4.jpg"];
 
-        function byttBilde() {
-            indeks++;
+// Функция для смены картинки и текста
+function byttBilde() {
+    indeks++;
+    if (indeks === bilder.length) {
+        indeks = 0;
+    }
+    document.getElementById("imgSkog").src = "images/" + bilder[indeks];
+    document.getElementById("tekst").textContent = tekster[indeks];
+}
 
-            if (indeks === 4) {
-                indeks = 0;
-            }
+// Вешаем обработчик на кнопку один раз
+const music = document.getElementById("bgMusic");
+const btn = document.getElementById("musicBtn");
 
-            let fileURL = "images/" + bilder[indeks];
-            document.getElementById("imgSkog").src = fileURL;
-            document.getElementById("tekst").textContent= tekster[indeks];
+btn.addEventListener("click", () => {
+    if (music.paused) {
+        music.play();
+        btn.textContent = "⏸ Pause Music";
+    } else {
+        music.pause();
+        btn.textContent = "▶ Play Music";
+    }
+});
 
-            const music = document.getElementById("bgMusic");
-    const btn = document.getElementById("musicBtn");
+// Запуск карусели
+byttBilde();
+setInterval(byttBilde, 3000);
 
-    btn.addEventListener("click", () => {
-        if (music.paused) {
-            music.play();
-            btn.textContent = "⏸ Pause Music";
-        } else {
-            music.pause();
-            btn.textContent = "▶ Play Music";
-        }
-    });
-        }
-        byttBilde();
-        setInterval(byttBilde, 3000);
     </script>
  <style>
     /* RESET */
@@ -148,3 +150,4 @@
 
 </body>
 </html>
+
